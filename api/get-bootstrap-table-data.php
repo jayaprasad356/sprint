@@ -136,7 +136,7 @@ if (isset($_GET['table']) && $_GET['table'] == 'earnings')
 
     if (isset($_GET['search']) && !empty($_GET['search'])) {
         $search = $db->escapeString($_GET['search']);
-        $where .= "AND users.name like '%" . $search . "%' OR users.id like '%" . $search . "%' OR users.email like '%" . $search . "%' ";
+        $where .= "AND name like '%" . $search . "%' OR id like '%" . $search . "%' OR email like '%" . $search . "%' ";
     }
     if (isset($_GET['sort'])){
         $sort = $db->escapeString($_GET['sort']);
@@ -146,7 +146,7 @@ if (isset($_GET['table']) && $_GET['table'] == 'earnings')
         $order = $db->escapeString($_GET['order']);
 
     }
-    $sql = "SELECT COUNT(rewards.id) as total FROM `users`,`rewards`  WHERE users.id = rewards.user_id " . $where;
+    $sql = "SELECT COUNT(id) as total FROM `users`  WHERE id is NOT NULL " . $where;
     $db->sql($sql);
     $res = $db->getResult();
    
@@ -154,7 +154,7 @@ if (isset($_GET['table']) && $_GET['table'] == 'earnings')
     foreach ($res as $row)
         $total = $row['total'];
        
-    $sql = "SELECT *,users.id AS id,rewards.reward AS reward,rewards.steps AS steps FROM users,rewards WHERE users.id = rewards.user_id  " . $where ;
+    $sql = "SELECT * FROM users WHERE steps >= 2000" . $where ;
     $db->sql($sql);
     $res = $db->getResult();
     
@@ -175,7 +175,7 @@ if (isset($_GET['table']) && $_GET['table'] == 'earnings')
         $tempRow['email'] = $row['email'];
         $tempRow['reward'] = $row['reward'];
         $tempRow['steps'] = $row['steps'];
-        $tempRow['reward_date'] = $row['reward_date'];
+        //$tempRow['reward_date'] = $row['reward_date'];
         
         
         

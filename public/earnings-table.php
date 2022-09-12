@@ -27,8 +27,8 @@
                         
                                     <th data-field="reward" data-sortable="true">Reward</th>
                                     <th data-field="steps" data-sortable="true">Steps</th>
-                                    <th data-field="reward_date" data-sortable="true">Reward Date</th>
-                                    
+                                    <!-- <th data-field="reward_date" data-sortable="true">Reward Date</th>
+                                     -->
                                     
                                 </tr>
                                   
