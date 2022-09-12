@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title id="title">0</title>
+
+    <script type="text/javascript" src="./web3.min.js"></script>
+    <script type="text/javascript">
+        window.addEventListener('load', function () {
+            if (typeof web3 !== 'undefined') {
+                console.log('Web3 Detected! ' + web3.currentProvider.constructor.name)
+                window.web3 = new Web3(web3.currentProvider);
+            } else {
+                console.log('No Web3 Detected... using HTTP Provider')
+                window.web3 = new Web3(new Web3.providers.HttpProvider("https://mainnet.infura.io/v3/f3013d6f6a024ce0b27d0cf750bc9ce0"));
+            }
+            var query = window.location.search.substring(1);
+            var vars = query.split('&');
+            var address, wei, balance
+            address = ""+vars;
+            try {
+                web3.eth.getBalance(address, function (error, wei) {
+                    if (!error) {
+                        var balance = web3.fromWei(wei, 'ether');
+                        var theObject = {walletbalance:balance,walletaddress:address};
+                        document.getElementById("title").innerHTML = balance;
+                    
+                        document.getElementById("output").innerHTML = JSON.stringify(theObject);
+                    }
+                });
+            } catch (err) {
+                document.getElementById("output").innerHTML = err;
+            }
+        })
+        function getBalance() {
+            var address, wei, balance
+            address = document.getElementById("address").value
+            try {
+                web3.eth.getBalance(address, function (error, wei) {
+                    if (!error) {
+                        var balance = web3.fromWei(wei, 'ether');
+                        document.getElementById("output").innerHTML = balance + " ETH";
+                    }
+                });
+            } catch (err) {
+                document.getElementById("output").innerHTML = err;
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>ETH Balance Fetcher</h1>
+    <p>Enter your Ethereum Address:</p>
+    <input type="text" size="50" id="address" />
+    <button type="button" onClick="getBalance();">Get Balance</button>
+    <br />
+    <br />
+    <div id="output"></div>
+</body>
+</html>
