@@ -168,6 +168,16 @@ if (isset($_GET['table']) && $_GET['table'] == 'earnings')
    
     
     foreach ($res as $row) {
+        $id = $row['id'];
+        $sql = "SELECT SUM(earn) AS earn FROM `steps` WHERE user_id = '$id'";
+        $db->sql($sql);
+        $res = $db->getResult();
+        // $num = $db->numRows($res);
+        // $earn = 0;
+        // if($num > 0){
+        //     $earn = 
+        // }
+        
 
     
         $tempRow['id'] = $row['id'];
@@ -175,6 +185,8 @@ if (isset($_GET['table']) && $_GET['table'] == 'earnings')
         $tempRow['email'] = $row['email'];
         $tempRow['reward'] = $row['reward'];
         $tempRow['steps'] = $row['steps'];
+        $tempRow['earn'] = $res[0]['earn'];
+        $tempRow['wallet_address'] = $row['wallet_address'];
         //$tempRow['reward_date'] = $row['reward_date'];
         
         
