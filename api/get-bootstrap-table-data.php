@@ -99,15 +99,19 @@ if (isset($_GET['table']) && $_GET['table'] == 'users')
    
     
     foreach ($res as $row) {
-        $sql="SELECT * FROM users";
+        $id = $row['id'];
+        $sql = "SELECT SUM(earn) AS earn FROM `steps` WHERE user_id = '$id'";
         $db->sql($sql);
         $res = $db->getResult();
+
 
     
         $tempRow['id'] = $row['id'];
         $tempRow['name'] = $row['name'];
         $tempRow['email'] = $row['email'];
         $tempRow['gender'] = $row['gender'];
+        $tempRow['steps'] = $row['steps'];
+        $tempRow['earn'] = $res[0]['earn'];
         $tempRow['wallet_balance'] = $row['wallet_balance'];
         $tempRow['wallet_address'] = $row['wallet_address'];
         
@@ -136,7 +140,7 @@ if (isset($_GET['table']) && $_GET['table'] == 'earnings')
 
     if (isset($_GET['search']) && !empty($_GET['search'])) {
         $search = $db->escapeString($_GET['search']);
-        $where .= "AND name like '%" . $search . "%' OR id like '%" . $search . "%' OR email like '%" . $search . "%' ";
+        $where .= "AND u.name like '%" . $search . "%' OR id like '%" . $search . "%' OR email like '%" . $search . "%' ";
     }
     if (isset($_GET['sort'])){
         $sort = $db->escapeString($_GET['sort']);
@@ -146,7 +150,7 @@ if (isset($_GET['table']) && $_GET['table'] == 'earnings')
         $order = $db->escapeString($_GET['order']);
 
     }
-    $sql = "SELECT COUNT(id) as total FROM `users`  WHERE id is NOT NULL " . $where;
+    $sql = "SELECT COUNT(s.id) as total FROM `steps` s,`users` u WHERE s.user_id = u.id " . $where;
     $db->sql($sql);
     $res = $db->getResult();
    
@@ -154,7 +158,7 @@ if (isset($_GET['table']) && $_GET['table'] == 'earnings')
     foreach ($res as $row)
         $total = $row['total'];
        
-    $sql = "SELECT * FROM users WHERE steps >= 2000" . $where ;
+    $sql = "SELECT *,s.steps AS steps,s.date AS date FROM `steps` s,`users` u WHERE s.user_id = u.id AND s.steps >= 2000" . $where ;
     $db->sql($sql);
     $res = $db->getResult();
     
@@ -169,9 +173,9 @@ if (isset($_GET['table']) && $_GET['table'] == 'earnings')
     
     foreach ($res as $row) {
         $id = $row['id'];
-        $sql = "SELECT SUM(earn) AS earn FROM `steps` WHERE user_id = '$id'";
-        $db->sql($sql);
-        $res = $db->getResult();
+        // $sql = "SELECT SUM(earn) AS earn FROM `steps` WHERE user_id = '$id'";
+        // $db->sql($sql);
+        // $res = $db->getResult();
         // $num = $db->numRows($res);
         // $earn = 0;
         // if($num > 0){
@@ -183,9 +187,10 @@ if (isset($_GET['table']) && $_GET['table'] == 'earnings')
         $tempRow['id'] = $row['id'];
         $tempRow['name'] = $row['name'];
         $tempRow['email'] = $row['email'];
-        $tempRow['reward'] = $row['reward'];
+        $tempRow['date'] = $row['date'];
+        // $tempRow['reward'] = $row['reward'];
         $tempRow['steps'] = $row['steps'];
-        $tempRow['earn'] = $res[0]['earn'];
+        $tempRow['earn'] = $row['earn'];
         $tempRow['wallet_address'] = $row['wallet_address'];
         //$tempRow['reward_date'] = $row['reward_date'];
         

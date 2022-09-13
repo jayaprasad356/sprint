@@ -24,7 +24,8 @@
                                     <th  data-field="id" data-sortable="true">ID</th>
                                     <th  data-field="name" data-sortable="true">Name</th>
                                     <th  data-field="email" data-sortable="true">Email</th>
-                        
+                                    <th  data-field="earn" data-sortable="true">Earnings</th>
+                                    <th  data-field="steps" data-sortable="true">Steps</th>
                                     <th data-field="gender" data-sortable="true">Gender</th>
                                     <th data-field="wallet_balance" data-sortable="true">Wallet Balance</th>
                                     <th data-field="wallet_address" data-sortable="true">Wallet Address</th>
