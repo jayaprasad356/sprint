@@ -85,17 +85,17 @@ if ($num == 1){
     }else{
         $reward = 0;
     }
-    $sql = "UPDATE `users` SET `steps`= steps + $steps,`reward` = '$reward' WHERE id=" . $user_id;
+    $sql = "UPDATE `users` SET `steps`= steps + $steps,`reward` = reward + '$reward' WHERE id=" . $user_id;
     $db->sql($sql);
     $sql = "SELECT * FROM steps WHERE date ='$date'";
     $db->sql($sql);
     $res = $db->getResult();
     $num = $db->numRows($res);
     if ($num == 1){
-        $sql = "UPDATE `steps` SET `steps`= steps + $steps,`calories` = calories + $calories,`earn` = earn + $steps WHERE date='$date'";
+        $sql = "UPDATE `steps` SET `steps`= steps + $steps,`calories` = calories + $calories,`earn` = earn + $reward WHERE date='$date'";
         $db->sql($sql);
     }else{
-        $sql = "INSERT INTO steps(`user_id`,`date`,`steps`,`calories`,`earn`)VALUES('$user_id','$date','$steps','$calories','$steps')";
+        $sql = "INSERT INTO steps(`user_id`,`date`,`steps`,`calories`,`earn`)VALUES('$user_id','$date','$steps','$calories','$reward')";
         $db->sql($sql);
     }
 
